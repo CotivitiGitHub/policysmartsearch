@@ -45,7 +45,7 @@ class _UiSettings(BaseSettings):
     logo: Optional[str] = None
     chat_logo: Optional[str] = None
     chat_title: str = "Start chatting"
-    chat_description: str = "This chatbot is configured to answer your questions"
+    chat_description: str = "This chatbot will answer your questions using information from the inpatient DRG auditing policies located <a href=""https://cotiviti.sharepoint.com/sites/ccoe/ccv/MCR R3 Help/Forms/AllItems.aspx?newTargetListUrl=%2Fsites%2Fccoe%2Fccv%2FMCR%20R3%20Help&viewpath=%2Fsites%2Fccoe%2Fccv%2FMCR%20R3%20Help%2FForms%2FAllItems%2Easpx&id=%2Fsites%2Fccoe%2Fccv%2FMCR%20R3%20Help%2FInpatient%20DRG&viewid=8fa4d73e%2Ddc93%2D45be%2Da7c8%2Dcf5a03c64e24"">Here</a>."
     favicon: str = "/favicon.ico"
     show_share_button: bool = True
 
