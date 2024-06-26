@@ -766,9 +766,9 @@ const Chat = () => {
           <div className={styles.chatContainer}>
             {!messages || messages.length < 1 ? (
               <Stack className={styles.chatEmptyState}>
-                <img src={ui?.chat_logo ? ui.chat_logo : Contoso} className={styles.chatIcon} aria-hidden="true" />
+                <img src={ui?.chat_logo ? ui.chat_logo : Contoso} className={styles.chatIcon} aria-hidden="true" style="height: 211px !important;" />
                 <h1 className={styles.chatEmptyStateTitle}>{ui?.chat_title}</h1>
-                <h2 className={styles.chatEmptyStateSubtitle}>{ui?.chat_description}</h2>
+                <h2 className={styles.chatEmptyStateSubtitle}>This chatbot will answer your questions using information from the inpatient DRG auditing policies located <a href="https://cotiviti.sharepoint.com/sites/ccoe/ccv/MCR R3 Help/Forms/AllItems.aspx?newTargetListUrl=%2Fsites%2Fccoe%2Fccv%2FMCR%20R3%20Help&viewpath=%2Fsites%2Fccoe%2Fccv%2FMCR%20R3%20Help%2FForms%2FAllItems%2Easpx&id=%2Fsites%2Fccoe%2Fccv%2FMCR%20R3%20Help%2FInpatient%20DRG&viewid=8fa4d73e%2Ddc93%2D45be%2Da7c8%2Dcf5a03c64e24">Here</a>.</h2>
               </Stack>
             ) : (
               <div className={styles.chatMessageStream} style={{ marginBottom: isLoading ? '40px' : '0px' }} role="log">
