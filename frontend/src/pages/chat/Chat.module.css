@@ -59,10 +59,20 @@
   text-align: center;
   letter-spacing: -0.01em;
   color: #616161;
+  width: 60dvw;
+}
+
+.chatEmptyStateSubtitleLeft {
+  text-align: left !important;
 }
 
 .chatIcon {
   height: 62px;
+  width: auto;
+}
+
+.chatIconLarge {
+  height: 210px;
   width: auto;
 }
 

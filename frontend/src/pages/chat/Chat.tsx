@@ -766,7 +766,7 @@ const Chat = () => {
           <div className={styles.chatContainer}>
             {!messages || messages.length < 1 ? (
               <Stack className={styles.chatEmptyState}>
-                <img style={{ height: '210px !important'}} src={ui?.chat_logo ? ui.chat_logo : Contoso} className={styles.chatIcon} aria-hidden="true" />
+                <img src={ui?.chat_logo ? ui.chat_logo : Contoso} className={styles.chatIconLarge} aria-hidden="true" />
                 <h1 className={styles.chatEmptyStateTitle}>{ui?.chat_title}</h1>
                 <h2 className={styles.chatEmptyStateSubtitle}>
                 <p>
@@ -775,12 +775,14 @@ const Chat = () => {
                 <p>
                 You <em>must</em> ask your questions as full sentences using the guidance below.
                 </p>
+                <div className={styles.chatEmptyStateSubtitleLeft}>
                 <p>
                 For general policy questions, start every question with this phrase: <b>You are a doctor. Answer the question and explain the reasoning used:</b>
                 </p>
                 <p>
                 For client specific policy questions, start every question with this phrase (insert client name instead of &lt;CLIENT&gt;): <b>You are a doctor. Answer the question using documentation for the client &lt;CLIENT&gt;, but if &lt;CLIENT&gt; documentation does not contain an answer, you can use documentation not specific to any client. Answer the question and explain the reasoning used:</b>
                 </p>
+                </div>
                 </h2>
               </Stack>
             ) : (
