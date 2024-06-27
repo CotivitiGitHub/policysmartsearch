@@ -83,8 +83,7 @@ const Layout = () => {
                 text={appStateContext?.state?.isChatHistoryOpen ? hideHistoryLabel : showHistoryLabel}
               />
             )}
-            <ShareButton onClick={handleShareClick} text={shareLabel} />
-            {/* {ui?.show_share_button && <ShareButton onClick={handleShareClick} text={shareLabel} />} */}
+            {ui?.show_share_button && <ShareButton onClick={handleShareClick} text={shareLabel} />}
           </Stack>
         </Stack>
       </header>

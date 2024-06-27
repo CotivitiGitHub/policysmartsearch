@@ -816,15 +816,6 @@ const Chat = () => {
                   <p>
                     You <em>must</em> ask your questions as full sentences using the guidance located in the 'Prompt' button.
                   </p>
-                  {/* <div className={styles.chatEmptyStateSubtitleLeft}>
-                <p>
-                For general policy questions, start every question with this phrase: <b>You are a doctor. Answer the question and explain the reasoning used:</b>
-                </p>
-                <p>
-                For client specific policy questions, start every question with this phrase (insert client name instead of &lt;CLIENT&gt;):<br/>
-                <b>You are a doctor. Answer the question using documentation for the client &lt;CLIENT&gt;, but if &lt;CLIENT&gt; documentation does not contain an answer, you can use documentation not specific to any client. Answer the question and explain the reasoning used:</b>
-                </p>
-                </div> */}
                 </h2>
               </Stack>
             ) : (
@@ -947,9 +938,6 @@ const Chat = () => {
                         <b>You are a doctor. Answer the question using documentation for the client &lt;CLIENT&gt;, but if &lt;CLIENT&gt; documentation does not contain an answer, you can use documentation not specific to any client. Answer the question and explain the reasoning used:</b>
                       </p>
                     </Text>
-                    {/* <Link href="http://microsoft.com" target="_blank" className={calloutSytles.link}>
-            Sample link
-          </Link> */}
                   </Callout>
                 ) : null}
                 <CommandBarButton
@@ -962,7 +950,7 @@ const Chat = () => {
                       color: '#BDBDBD !important'
                     },
                     root: {
-                      color: '#FFFFFF',
+                      color: '#FFFFFF !important',
                       background:
                         'radial-gradient(109.81% 107.82% at 100.1% 90.19%, rgb(52 0 117) 33.63%, rgb(100 56 158) 70.31%, rgb(159 129 224) 100%)'
                     },
