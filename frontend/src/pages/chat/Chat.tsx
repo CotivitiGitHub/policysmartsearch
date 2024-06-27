@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, useContext, useLayoutEffect } from 'react'
-import { CommandBarButton, IconButton, Dialog, DialogType, Stack } from '@fluentui/react'
+import { Callout, DirectionalHint, CommandBarButton, IconButton, Dialog, DialogType, Text, Link, Stack, mergeStyleSets, FontWeights } from '@fluentui/react'
 import { SquareRegular, ShieldLockRegular, ErrorCircleRegular } from '@fluentui/react-icons'
 
 import ReactMarkdown from 'react-markdown'
@@ -37,13 +37,43 @@ import { Answer } from "../../components/Answer";
 import { QuestionInput } from "../../components/QuestionInput";
 import { ChatHistoryPanel } from "../../components/ChatHistory/ChatHistoryPanel";
 import { AppStateContext } from "../../state/AppProvider";
-import { useBoolean } from "@fluentui/react-hooks";
+import { useBoolean, useId } from "@fluentui/react-hooks";
 
 const enum messageStatus {
   NotRunning = 'Not Running',
   Processing = 'Processing',
   Done = 'Done'
 }
+
+const calloutSytles = mergeStyleSets({
+  buttonArea: {
+    verticalAlign: 'top',
+    display: 'inline-block',
+    textAlign: 'center',
+    margin: '0 100px',
+    minWidth: 130,
+    height: 32,
+  },
+  configArea: {
+    width: 300,
+    display: 'inline-block',
+  },
+  button: {
+    width: 130,
+  },
+  callout: {
+    width: '100dvh',
+    padding: '20px 24px',
+  },
+  title: {
+    marginBottom: 12,
+    fontWeight: FontWeights.semilight,
+  },
+  link: {
+    display: 'block',
+    marginTop: 20,
+  },
+});
 
 const Chat = () => {
   const appStateContext = useContext(AppStateContext)
@@ -54,6 +84,17 @@ const Chat = () => {
   const [showLoadingMessage, setShowLoadingMessage] = useState<boolean>(false)
   const [activeCitation, setActiveCitation] = useState<Citation>()
   const [isCitationPanelOpen, setIsCitationPanelOpen] = useState<boolean>(false)
+
+  const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(false);
+  const [isBeakVisible, { toggle: toggleIsBeakVisible }] = useBoolean(true);
+  const [gapSpace, setGapSpace] = useState<number>();
+  const [beakWidth, setBeakWidth] = useState<number>();
+  const [directionalHint, setDirectionalHint] = useState<DirectionalHint>(DirectionalHint.topLeftEdge);
+
+  const buttonId = useId('callout-button');
+  const labelId = useId('callout-label');
+  const descriptionId = useId('callout-description');
+
   const [isIntentsPanelOpen, setIsIntentsPanelOpen] = useState<boolean>(false)
   const abortFuncs = useRef([] as AbortController[])
   const [showAuthMessage, setShowAuthMessage] = useState<boolean | undefined>()
@@ -769,20 +810,21 @@ const Chat = () => {
                 <img src={ui?.chat_logo ? ui.chat_logo : Contoso} className={styles.chatIconLarge} aria-hidden="true" />
                 <h1 className={styles.chatEmptyStateTitle}>{ui?.chat_title}</h1>
                 <h2 className={styles.chatEmptyStateSubtitle}>
-                <p>
-                This chatbot will answer your questions using information from the inpatient DRG auditing policies located <a href="https://cotiviti.sharepoint.com/sites/ccoe/ccv/MCR R3 Help/Forms/AllItems.aspx?newTargetListUrl=%2Fsites%2Fccoe%2Fccv%2FMCR%20R3%20Help&viewpath=%2Fsites%2Fccoe%2Fccv%2FMCR%20R3%20Help%2FForms%2FAllItems%2Easpx&id=%2Fsites%2Fccoe%2Fccv%2FMCR%20R3%20Help%2FInpatient%20DRG&viewid=8fa4d73e%2Ddc93%2D45be%2Da7c8%2Dcf5a03c64e24">here</a>.
-                </p>
-                <p>
-                You <em>must</em> ask your questions as full sentences using the guidance below.
-                </p>
-                <div className={styles.chatEmptyStateSubtitleLeft}>
+                  <p>
+                    This chatbot will answer your questions using information from the inpatient DRG auditing policies located<a href="https://cotiviti.sharepoint.com/sites/ccoe/ccv/MCR R3 Help/Forms/AllItems.aspx?newTargetListUrl=%2Fsites%2Fccoe%2Fccv%2FMCR%20R3%20Help&viewpath=%2Fsites%2Fccoe%2Fccv%2FMCR%20R3%20Help%2FForms%2FAllItems%2Easpx&id=%2Fsites%2Fccoe%2Fccv%2FMCR%20R3%20Help%2FInpatient%20DRG&viewid=8fa4d73e%2Ddc93%2D45be%2Da7c8%2Dcf5a03c64e24">here</a>.
+                  </p>
+                  <p>
+                    You <em>must</em> ask your questions as full sentences using the guidance located in the 'Prompt' button.
+                  </p>
+                  {/* <div className={styles.chatEmptyStateSubtitleLeft}>
                 <p>
                 For general policy questions, start every question with this phrase: <b>You are a doctor. Answer the question and explain the reasoning used:</b>
                 </p>
                 <p>
-                For client specific policy questions, start every question with this phrase (insert client name instead of &lt;CLIENT&gt;): <b>You are a doctor. Answer the question using documentation for the client &lt;CLIENT&gt;, but if &lt;CLIENT&gt; documentation does not contain an answer, you can use documentation not specific to any client. Answer the question and explain the reasoning used:</b>
+                For client specific policy questions, start every question with this phrase (insert client name instead of &lt;CLIENT&gt;):<br/>
+                <b>You are a doctor. Answer the question using documentation for the client &lt;CLIENT&gt;, but if &lt;CLIENT&gt; documentation does not contain an answer, you can use documentation not specific to any client. Answer the question and explain the reasoning used:</b>
                 </p>
-                </div>
+                </div> */}
                 </h2>
               </Stack>
             ) : (
@@ -855,32 +897,61 @@ const Chat = () => {
                 </Stack>
               )}
               <Stack>
-                {appStateContext?.state.isCosmosDBAvailable?.status !== CosmosDBStatus.NotConfigured && (
-                  <CommandBarButton
-                    role="button"
-                    styles={{
-                      icon: {
-                        color: '#FFFFFF'
-                      },
-                      iconDisabled: {
-                        color: '#BDBDBD !important'
-                      },
-                      root: {
-                        color: '#FFFFFF',
-                        background:
-                          'radial-gradient(109.81% 107.82% at 100.1% 90.19%, #0F6CBD 33.63%, #2D87C3 70.31%, #8DDDD8 100%)'
-                      },
-                      rootDisabled: {
-                        background: '#F0F0F0'
-                      }
-                    }}
-                    className={styles.newChatIcon}
-                    iconProps={{ iconName: 'Add' }}
-                    onClick={newChat}
-                    disabled={disabledButton()}
-                    aria-label="start a new chat button"
-                  />
-                )}
+                <CommandBarButton
+                  role="button"
+                  id="prompts"
+                  styles={{
+                    icon: {
+                      color: '#FFFFFF'
+                    },
+                    iconDisabled: {
+                      color: '#BDBDBD !important'
+                    },
+                    root: {
+                      color: '#FFFFFF !important',
+                      background:
+                        'radial-gradient(109.81% 107.82% at 100.1% 90.19%, rgb(52 0 117) 33.63%, rgb(100 56 158) 70.31%, rgb(159 129 224) 100%)'
+                    },
+                    rootDisabled: {
+                      background: '#F0F0F0'
+                    }
+                  }}
+                  className={styles.newChatIcon}
+                  text='Prompt'
+                  onClick={toggleIsCalloutVisible}
+                  aria-label="start a new chat button"
+                />
+                {isCalloutVisible ? (
+                  <Callout
+                    ariaLabelledBy={labelId}
+                    ariaDescribedBy={descriptionId}
+                    role="dialog"
+                    className={calloutSytles.callout}
+                    gapSpace={gapSpace}
+                    target={`#prompts`}
+                    isBeakVisible={isBeakVisible}
+                    beakWidth={beakWidth}
+                    onDismiss={toggleIsCalloutVisible}
+                    directionalHint={directionalHint}
+                    setInitialFocus
+                  >
+                    <Text block variant="xLarge" className={calloutSytles.title} id={labelId}>
+                      Prompt Examples
+                    </Text>
+                    <Text block variant="small" id={descriptionId}>
+                      <p>
+                        For general policy questions, start every question with this phrase:<br/><b>You are a doctor. Answer the question and explain the reasoning used:</b>
+                      </p>
+                      <p>
+                        For client specific policy questions, start every question with this phrase (insert client name instead of &lt;CLIENT&gt;):<br />
+                        <b>You are a doctor. Answer the question using documentation for the client &lt;CLIENT&gt;, but if &lt;CLIENT&gt; documentation does not contain an answer, you can use documentation not specific to any client. Answer the question and explain the reasoning used:</b>
+                      </p>
+                    </Text>
+                    {/* <Link href="http://microsoft.com" target="_blank" className={calloutSytles.link}>
+            Sample link
+          </Link> */}
+                  </Callout>
+                ) : null}
                 <CommandBarButton
                   role="button"
                   styles={{
@@ -893,7 +964,7 @@ const Chat = () => {
                     root: {
                       color: '#FFFFFF',
                       background:
-                        'radial-gradient(109.81% 107.82% at 100.1% 90.19%, #0F6CBD 33.63%, #2D87C3 70.31%, #8DDDD8 100%)'
+                        'radial-gradient(109.81% 107.82% at 100.1% 90.19%, rgb(52 0 117) 33.63%, rgb(100 56 158) 70.31%, rgb(159 129 224) 100%)'
                     },
                     rootDisabled: {
                       background: '#F0F0F0'
@@ -904,7 +975,7 @@ const Chat = () => {
                       ? styles.clearChatBroom
                       : styles.clearChatBroomNoCosmos
                   }
-                  iconProps={{ iconName: 'Broom' }}
+                  text='Clear'
                   onClick={
                     appStateContext?.state.isCosmosDBAvailable?.status !== CosmosDBStatus.NotConfigured
                       ? clearChat

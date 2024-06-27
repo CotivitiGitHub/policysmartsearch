@@ -72,7 +72,7 @@
 }
 
 .chatIconLarge {
-  height: 210px;
+  height: 16svh;
   width: auto;
 }
 
@@ -166,11 +166,11 @@
   justify-content: center;
   align-items: center;
   position: absolute;
-  width: 40px;
+  width: 50px;
   height: 40px;
   left: 7px;
-  top: 13px;
-  color: #ffffff;
+  top: 66px;
+  color: #000000;
   border-radius: 4px;
   z-index: 1;
 }
@@ -182,11 +182,11 @@
   justify-content: center;
   align-items: center;
   position: absolute;
-  width: 40px;
+  width: 50px;
   height: 40px;
   left: 7px;
-  top: 66px;
-  color: #ffffff;
+  top: 13px;
+  color: #000000;
   border-radius: 4px;
   z-index: 1;
 }
@@ -198,11 +198,11 @@
   justify-content: center;
   align-items: center;
   position: absolute;
-  width: 40px;
+  width: 50px;
   height: 40px;
   left: 7px;
-  top: 66px;
-  color: #ffffff;
+  top: 13px;
+  color: #000000;
   border-radius: 4px;
   z-index: 1;
 }
